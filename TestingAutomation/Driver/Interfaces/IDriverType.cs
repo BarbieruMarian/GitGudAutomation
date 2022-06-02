@@ -2,7 +2,7 @@
 
 namespace TestingAutomation.Driver.Interfaces
 {
-    public interface IBrowserDriverType
+    public interface IDriverType
     {
         IWebDriver GetChromeDriver();
         IWebDriver GetFirefoxDriver();

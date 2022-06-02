@@ -1,27 +1,26 @@
 ﻿using OpenQA.Selenium;
+using TestFramework.Configuration;
 using TestingAutomation.Driver.Interfaces;
-using TestingAutomation.Settings;
 
 namespace TestingAutomation.Driver
 {
     public class DriverFixture : IDriverFixture, IDisposable
     {
         private IWebDriver driver;
-        private readonly IBrowserDriverType browserDriverType;
-        private readonly TestSettings testSettings;
+        private readonly IDriverType browserDriverType;
 
         public IWebDriver Driver => driver;
 
-        public DriverFixture(TestSettings testSettings, IBrowserDriverType browserDriverType)
+        public DriverFixture(IDriverType browserDriverType)
         {
+            ConfigReader.InitializeSettings("DemoBranch");
             this.browserDriverType = browserDriverType;
-            this.testSettings = testSettings;
             this.driver = GetWebDriver();
         }
 
         private IWebDriver GetWebDriver()
         {
-            return testSettings.BrowserType switch
+            return Config.BrowserType switch
             {
                 BrowserType.Chrome  => browserDriverType.GetChromeDriver(),
                 BrowserType.Firefox => browserDriverType.GetFirefoxDriver(),

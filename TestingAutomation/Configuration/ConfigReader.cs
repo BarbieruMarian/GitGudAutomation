@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using TestingAutomation.Driver;
 
 namespace TestFramework.Configuration
 {
@@ -15,6 +16,21 @@ namespace TestFramework.Configuration
             Config.AppOneURL = configurationRoot.GetSection(jsonSection).Get<ConfigSettings>().AppOneURL;
             Config.Username = configurationRoot.GetSection(jsonSection).Get<ConfigSettings>().Username;
             Config.Password = configurationRoot.GetSection(jsonSection).Get<ConfigSettings>().Password;
+            var browserType = configurationRoot.GetSection(jsonSection).Get<ConfigSettings>().BrowserType;
+            switch (browserType)
+            {
+                case "Chrome":
+                    Config.BrowserType = BrowserType.Chrome;
+                    break;
+
+                case "Firefox":
+                    Config.BrowserType = BrowserType.Firefox;
+                    break;
+
+                default:
+                    Config.BrowserType = BrowserType.Chrome;
+                    break;
+            }
 
         }
     }

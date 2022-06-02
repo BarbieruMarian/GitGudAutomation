@@ -7,7 +7,7 @@ using OpenQA.Selenium.Firefox;
 
 namespace TestingAutomation.Driver
 {
-    public class BrowserDriverType : IBrowserDriverType
+    public class DriverType : IDriverType
     {
         public IWebDriver GetChromeDriver()
         {

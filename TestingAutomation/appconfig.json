@@ -2,6 +2,7 @@
   "DemoBranch": {
     "AppOneURL": "https://www.888casino.ro/",
     "username": "AUTO3K4YN",
-    "password": "Ap123456!"
+    "password": "Ap123456!",
+    "BrowserType": "Chrome"
   }
 }

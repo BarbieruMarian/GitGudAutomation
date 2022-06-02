@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using TestingAutomation.Driver;
 
 namespace TestFramework.Configuration
 {
@@ -12,5 +13,8 @@ namespace TestFramework.Configuration
 
         [JsonProperty("password")]
         public string? Password { get; set; }
+
+        [JsonProperty("BrowserType")]
+        public string? BrowserType{ get; set; }
     }
 }

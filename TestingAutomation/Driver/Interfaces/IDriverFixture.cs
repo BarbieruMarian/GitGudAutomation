@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using TestFramework.Configuration;
 
 namespace TestingAutomation.Driver.Interfaces
 {

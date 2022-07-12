@@ -33,4 +33,9 @@
     <ProjectReference Include="..\TestingAutomation\TestFramework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="E2E Tests\" />
+    <Folder Include="RegressionTests\" />
+  </ItemGroup>
+
 </Project>

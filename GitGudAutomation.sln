@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFramework", "TestingAutomation\TestFramework.csproj", "{998F7677-5CA0-48FF-836E-325A4214EE53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{87ED4B64-9B44-43F2-8476-F7E7440F350F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "TestProject\TestProject.csproj", "{87ED4B64-9B44-43F2-8476-F7E7440F350F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

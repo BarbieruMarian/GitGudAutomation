@@ -17,6 +17,7 @@ namespace TestProject.Pages
         private IWebElement Username => driver.FindElement(By.Id("user-name"));
         private IWebElement Password => driver.FindElement(By.Id("password"));
         private IWebElement LoginButton => driver.FindElement(By.Id("login-button"));
+        private IWebElement LoginError => driver.FindElement(By.XPath("//button[@class='error-button']"));
         #endregion
 
         #region Actions
@@ -24,17 +25,30 @@ namespace TestProject.Pages
         public void GoTo()
         {
             driver.Navigate().GoToUrl(Config.AppOneURL);
-            Thread.Sleep(2000);
+            Thread.Sleep(500);
         }
         public void Login(string username, string password)
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(500);
             Username.SendKeys(username);
-            Thread.Sleep(2000);
+            Thread.Sleep(500);
             Password.SendKeys(password);
-            Thread.Sleep(2000);
+            Thread.Sleep(500);
             LoginButton.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(500);
+        }
+        public bool LoginFail()
+        {
+            try
+            {
+                Thread.Sleep(500);
+                return LoginError.Displayed;
+            }
+            catch
+            {
+                return false;
+            }
+            
         }
         #endregion
     }

@@ -2,7 +2,7 @@
   "DemoBranch": {
     "AppOneURL": "https://www.saucedemo.com/",
     "username": "standard_user",
-    "password": "secret_sauce!",
+    "password": "secret_sauce",
     "BrowserType": "Chrome"
   }
 }

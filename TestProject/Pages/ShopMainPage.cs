@@ -14,6 +14,8 @@ namespace TestProject.Pages
 
         #region Elements
         private IWebElement ProductsText => driver.FindElement(By.XPath("//span[text() = 'Products']"));
+        private IWebElement AddToCartBoltShirt => driver.FindElement(By.Id("add-to-cart-sauce-labs-bolt-t-shirt"));
+        private IWebElement RemoveButton => driver.FindElement(By.XPath("//button[text() = 'Remove']"));
 
         #endregion
 
@@ -30,6 +32,22 @@ namespace TestProject.Pages
                 return false;
             }
         }
+        public bool IsAddToCartNotWorking()
+        {
+            try
+            {
+                Thread.Sleep(2000);
+                AddToCartBoltShirt.Click();
+                Thread.Sleep(2000);
+                return !RemoveButton.Displayed;
+            }
+            catch
+            {
+                return true;
+            }
+
+        }
+
         #endregion
     }
 }

@@ -18,6 +18,7 @@ namespace TestProject.Pages
         private IWebElement Password => driver.FindElement(By.Id("password"));
         private IWebElement LoginButton => driver.FindElement(By.Id("login-button"));
         private IWebElement LoginError => driver.FindElement(By.XPath("//button[@class='error-button']"));
+        private IWebElement LoginErrorForLockedOutUser => driver.FindElement(By.XPath("//h3[text() = 'Epic sadface: Sorry, this user has been locked out.']"));
         #endregion
 
         #region Actions
@@ -50,6 +51,19 @@ namespace TestProject.Pages
             }
             
         }
+        public bool LoginLockedOutUser()
+        {
+            try
+            {
+                Thread.Sleep(500);
+                return LoginErrorForLockedOutUser.Displayed;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         #endregion
     }
 }

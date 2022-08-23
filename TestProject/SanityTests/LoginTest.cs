@@ -83,6 +83,22 @@ namespace TestProjectSwagLabs.SanityTests
             var isAddToCartWorking = mainPage.IsAddToCartNotWorking();
             Assert.True(isAddToCartWorking, "Add to cart button works - we expected it to fail for problem user");
         }
+        [Fact]
+        public void PerformanceGlitch()
+        {
+            //step 1 - Go To Website
+            var loginPage = new LoginPage(driver);
+            loginPage.GoTo();
+
+            //step 2 - Insert Username and Password
+            loginPage.Login("performance_glitch_user", Config.Password);
+
+            //verify that the login phase doesn' take more than 5s
+            var mainPage = new ShopMainPage(driver);
+            var isLoginSlow = mainPage.LoginTakesTooLong(3000);
+            Assert.False(isLoginSlow, "Login takes less than 5s");
+
+        }
     }
     
 }

@@ -22,6 +22,10 @@ namespace TestProject.Pages
 
         private IList<IWebElement> Description => driver.FindElements(By.XPath("//div[@class='inventory_item_desc']"));
         private IList<IWebElement> AddToCartBtn => driver.FindElements(By.XPath("//button[@class='btn btn_primary btn_small btn_inventory']"));
+        private IList<IWebElement> Images => driver.FindElements(By.XPath("//div[@class='inventory_item_img']/a/img"));
+        private IWebElement FilterButton => driver.FindElement(By.ClassName("product_sort_container"));
+        private IList<IWebElement> InventoryItemNames => driver.FindElements(By.ClassName("inventory_item_name"));
+
 
         #endregion
 
@@ -69,14 +73,88 @@ namespace TestProject.Pages
         }
         public bool CheckPrices()
         {
+            var listOfPrices = new List<string>();
             foreach (var item in Prices)
             {
+                listOfPrices.Add(item.Text);
                 var text = item.Text;
                 if (IsParsePrices(text) == false)   
                 return false;
                   
             }
             return true;
+
+        }
+        
+        private List<string> ListValuesAsStrings(IList<IWebElement> webElements)
+        {
+            var listOfStrings = new List<string>();
+            foreach (var item in webElements)
+            {
+                listOfStrings.Add(item.Text);
+
+            }
+            return listOfStrings;
+        }
+        public bool CheckNamesAreAToZ() // sortare crescatoare dupa nume
+        {
+            
+            var listOfNamesAToZ = ListValuesAsStrings(InventoryItemNames);
+            listOfNamesAToZ.Sort();
+            var selectElement = new SelectElement(FilterButton);
+            selectElement.SelectByText("Name (A to Z)");
+            Thread.Sleep(2000);
+            var listOfAscendingNames = ListValuesAsStrings(InventoryItemNames).ToList();
+            if (listOfNamesAToZ.SequenceEqual(listOfAscendingNames))
+                return true;
+            else return false;
+
+        }
+        public bool CheckNamesAreZToA() // sortare crescatoare dupa nume
+        {
+
+            var listOfNamesZToA = ListValuesAsStrings(InventoryItemNames);
+            var descendingListOfNames = listOfNamesZToA.OrderByDescending(x => x);
+            var selectElement = new SelectElement(FilterButton);
+            selectElement.SelectByText("Name (Z to A)");
+            Thread.Sleep(2000);
+            var listOfdescendingNames = ListValuesAsStrings(InventoryItemNames).ToList();
+            if (descendingListOfNames.SequenceEqual(listOfdescendingNames))
+                return true;
+            else return false;
+
+        }
+        public bool CheckPricesAreLowToHigh() // sa verific ca sunt in ordine crescatoare
+        {
+            var listOfPricesAsStrings = ListValuesAsStrings(Prices);
+            var listOfPrices = ParsePrices(listOfPricesAsStrings);
+            listOfPrices.Sort();
+            var selectElement = new SelectElement(FilterButton);
+            selectElement.SelectByText("Price (low to high)");
+            Thread.Sleep(3000);
+            var listOfPricesAsStringss = ListValuesAsStrings(Prices);
+            var listOfPricess = ParsePrices(listOfPricesAsStringss);
+            
+            if (listOfPrices.SequenceEqual(listOfPricess))
+                return true;
+            else return false;
+
+        }
+       
+        public bool CheckPricesAreHighToLow() // sa verific ca sunt in ordine descrescatoare
+        {
+            var listOfPricesAsStrings = ListValuesAsStrings(Prices);
+            var listOfPrices = ParsePrices(listOfPricesAsStrings);
+            var descendingListOfPrices = listOfPrices.OrderByDescending(i => i);            
+            var selectElement = new SelectElement(FilterButton);
+            selectElement.SelectByText("Price (high to low)");
+            Thread.Sleep(3000);
+            var listOfPricesAsStringss = ListValuesAsStrings(Prices);
+            var listOfPricess = ParsePrices(listOfPricesAsStringss);
+
+            if (descendingListOfPrices.SequenceEqual(listOfPricess))
+                return true;
+            else return false;
 
         }
         private bool IsParsePrices(string priceToParse)
@@ -87,6 +165,17 @@ namespace TestProject.Pages
             if (textToFloat)
                 return true;
             else return false;
+        }
+        private List<float> ParsePrices(List<string> pricesToParse)
+        {
+            var pricesAsFloat = new List<float>();  
+            foreach (var item in pricesToParse)
+            {
+                var priceToParse = item.Remove(0, 1);
+                var parsedPrice = float.Parse(priceToParse);
+                pricesAsFloat.Add(parsedPrice); 
+            }
+            return pricesAsFloat;
         }
         public bool CheckDescription()
         {
@@ -104,6 +193,24 @@ namespace TestProject.Pages
                 return true;
             else
                 return false;
+        }
+        public bool CheckNumberOfImages()
+        {
+            
+            if (Images.Count == 6)
+                return true;
+            else return false;
+        }
+        public bool CheckImageContainsJPG()
+        {
+            foreach (var item in Images)
+            {
+                var src = item.GetProperty("src");
+                if (!src.Contains(".jpg"))
+                    return false;
+
+            }
+            return true;
         }
 
         #endregion

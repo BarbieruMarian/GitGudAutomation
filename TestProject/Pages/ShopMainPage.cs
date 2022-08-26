@@ -22,9 +22,13 @@ namespace TestProject.Pages
 
         private IList<IWebElement> Description => driver.FindElements(By.XPath("//div[@class='inventory_item_desc']"));
         private IList<IWebElement> AddToCartBtn => driver.FindElements(By.XPath("//button[@class='btn btn_primary btn_small btn_inventory']"));
+        private IList<IWebElement> RemoveToCartBtn => driver.FindElements(By.XPath("//button[text()='Remove']"));
+        
         private IList<IWebElement> Images => driver.FindElements(By.XPath("//div[@class='inventory_item_img']/a/img"));
         private IWebElement FilterButton => driver.FindElement(By.ClassName("product_sort_container"));
         private IList<IWebElement> InventoryItemNames => driver.FindElements(By.ClassName("inventory_item_name"));
+        private IWebElement ShoppingCartNotEmpty => driver.FindElement(By.ClassName("shopping_cart_badge"));
+        private IWebElement ShoppingCartEmpty => driver.FindElement(By.ClassName("shopping_cart_link"));
 
 
         #endregion
@@ -84,6 +88,36 @@ namespace TestProject.Pages
             }
             return true;
 
+        }
+        public void ClickAddToCart()
+        {
+            AddToCartBtn[0].Click();
+            Thread.Sleep(1000);
+        }
+        public void ClickRemoveToCart()
+        {
+            RemoveToCartBtn[0].Click();
+            Thread.Sleep(1000);
+        }
+        public bool CheckIfAddToCartWasPressed()
+        {
+            //    var random = new Random();
+            
+            var text = RemoveToCartBtn[0].Text;
+            var cartProductNumbers = ShoppingCartNotEmpty.Text;
+            if (text == "REMOVE" && cartProductNumbers == "1")
+                return true;
+            else return false;
+
+        }
+        public bool CheckIfRemoveButtonWasPressed()
+        {
+            
+            var text = AddToCartBtn[0].Text;
+            var cartProductNumbers = ShoppingCartEmpty.Text;
+            if (text == "ADD TO CART" && cartProductNumbers == "")
+                return true;
+            else return false;
         }
         
         private List<string> ListValuesAsStrings(IList<IWebElement> webElements)

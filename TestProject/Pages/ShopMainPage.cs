@@ -23,14 +23,22 @@ namespace TestProject.Pages
         private IList<IWebElement> Description => driver.FindElements(By.XPath("//div[@class='inventory_item_desc']"));
         private IList<IWebElement> AddToCartBtn => driver.FindElements(By.XPath("//button[@class='btn btn_primary btn_small btn_inventory']"));
         private IList<IWebElement> RemoveToCartBtn => driver.FindElements(By.XPath("//button[text()='Remove']"));
-        
+
         private IList<IWebElement> Images => driver.FindElements(By.XPath("//div[@class='inventory_item_img']/a/img"));
         private IWebElement FilterButton => driver.FindElement(By.ClassName("product_sort_container"));
         private IList<IWebElement> InventoryItemNames => driver.FindElements(By.ClassName("inventory_item_name"));
         private IWebElement ShoppingCartNotEmpty => driver.FindElement(By.ClassName("shopping_cart_badge"));
         private IWebElement ShoppingCartEmpty => driver.FindElement(By.ClassName("shopping_cart_link"));
-
-
+        private IWebElement FacebookButton => driver.FindElement(By.ClassName("social_facebook"));
+        private IWebElement TwitterButton => driver.FindElement(By.ClassName("social_twitter"));
+        private IWebElement FooterTxt => driver.FindElement(By.ClassName("footer_copy"));
+        private IWebElement LeftTopBtn => driver.FindElement(By.Id("react-burger-menu-btn"));
+        private IWebElement CategoryItems => driver.FindElement(By.ClassName("bm-menu"));
+        private IWebElement CloseBtn => driver.FindElement(By.Id("react-burger-cross-btn"));
+        private IWebElement AllItemsBtn => driver.FindElement(By.Id("inventory_sidebar_link"));
+        private IWebElement AboutBtn => driver.FindElement(By.Id("about_sidebar_link"));
+        private IWebElement LogOutBtn => driver.FindElement(By.Id("logout_sidebar_link"));
+        private IWebElement ResetBtn => driver.FindElement(By.Id("reset_sidebar_link"));
         #endregion
 
         #region Actions
@@ -82,17 +90,28 @@ namespace TestProject.Pages
             {
                 listOfPrices.Add(item.Text);
                 var text = item.Text;
-                if (IsParsePrices(text) == false)   
-                return false;
-                  
+                if (IsParsePrices(text) == false)
+                    return false;
+
             }
             return true;
 
         }
+        public void ClickAddToCartBtn(int numberOfTimes)
+        {
+            var count = 0;
+            while (count < numberOfTimes)
+            {
+                AddToCartBtn[0].Click();
+                count++;
+            }
+        }
         public void ClickAddToCart()
         {
+
             AddToCartBtn[0].Click();
             Thread.Sleep(1000);
+
         }
         public void ClickRemoveToCart()
         {
@@ -102,7 +121,7 @@ namespace TestProject.Pages
         public bool CheckIfAddToCartWasPressed()
         {
             //    var random = new Random();
-            
+
             var text = RemoveToCartBtn[0].Text;
             var cartProductNumbers = ShoppingCartNotEmpty.Text;
             if (text == "REMOVE" && cartProductNumbers == "1")
@@ -112,14 +131,24 @@ namespace TestProject.Pages
         }
         public bool CheckIfRemoveButtonWasPressed()
         {
-            
+
             var text = AddToCartBtn[0].Text;
             var cartProductNumbers = ShoppingCartEmpty.Text;
             if (text == "ADD TO CART" && cartProductNumbers == "")
                 return true;
             else return false;
         }
-        
+        public bool CheckIfNotifIsNumberOfProducts(int numberOfTimes)
+        {
+
+            var cartProductNumbers = ShoppingCartNotEmpty.Text;
+            var cartNumberInt = 0;
+            var cart = int.TryParse(cartProductNumbers, out cartNumberInt);
+            if (numberOfTimes == cartNumberInt)
+                return true;
+            else return false;
+        }
+
         private List<string> ListValuesAsStrings(IList<IWebElement> webElements)
         {
             var listOfStrings = new List<string>();
@@ -132,7 +161,7 @@ namespace TestProject.Pages
         }
         public bool CheckNamesAreAToZ() // sortare crescatoare dupa nume
         {
-            
+
             var listOfNamesAToZ = ListValuesAsStrings(InventoryItemNames);
             listOfNamesAToZ.Sort();
             var selectElement = new SelectElement(FilterButton);
@@ -168,18 +197,18 @@ namespace TestProject.Pages
             Thread.Sleep(3000);
             var listOfPricesAsStringss = ListValuesAsStrings(Prices);
             var listOfPricess = ParsePrices(listOfPricesAsStringss);
-            
+
             if (listOfPrices.SequenceEqual(listOfPricess))
                 return true;
             else return false;
 
         }
-       
+
         public bool CheckPricesAreHighToLow() // sa verific ca sunt in ordine descrescatoare
         {
             var listOfPricesAsStrings = ListValuesAsStrings(Prices);
             var listOfPrices = ParsePrices(listOfPricesAsStrings);
-            var descendingListOfPrices = listOfPrices.OrderByDescending(i => i);            
+            var descendingListOfPrices = listOfPrices.OrderByDescending(i => i);
             var selectElement = new SelectElement(FilterButton);
             selectElement.SelectByText("Price (high to low)");
             Thread.Sleep(3000);
@@ -202,18 +231,18 @@ namespace TestProject.Pages
         }
         private List<float> ParsePrices(List<string> pricesToParse)
         {
-            var pricesAsFloat = new List<float>();  
+            var pricesAsFloat = new List<float>();
             foreach (var item in pricesToParse)
             {
                 var priceToParse = item.Remove(0, 1);
                 var parsedPrice = float.Parse(priceToParse);
-                pricesAsFloat.Add(parsedPrice); 
+                pricesAsFloat.Add(parsedPrice);
             }
             return pricesAsFloat;
         }
         public bool CheckDescription()
         {
-            foreach(var item in Description)
+            foreach (var item in Description)
             {
                 if (item.Text == string.Empty)
                     return false;
@@ -230,7 +259,7 @@ namespace TestProject.Pages
         }
         public bool CheckNumberOfImages()
         {
-            
+
             if (Images.Count == 6)
                 return true;
             else return false;
@@ -246,7 +275,103 @@ namespace TestProject.Pages
             }
             return true;
         }
+        public bool CheckFbButton()
+        {
+            FacebookButton.Click();
+            Thread.Sleep(2000);
+            driver.SwitchTo().Window(driver.WindowHandles[1]);
+            var fb = driver.Url;
+            if (fb == "https://www.facebook.com/saucelabs")
+                return true;
+            else return false;
 
-        #endregion
+
+        }
+        public bool CheckTwitterButton()
+        {
+            TwitterButton.Click();
+            Thread.Sleep(2000);
+            driver.SwitchTo().Window(driver.WindowHandles[1]);
+            var twitter = driver.Url;
+            if (twitter == "https://twitter.com/saucelabs")
+                return true;
+            else return false;
+
+
+        }
+        public bool CheckFooterTxt()
+        {
+            string currentYear = DateTime.Now.Year.ToString();
+
+            var footer = FooterTxt.Text;
+            if (footer == $"© {currentYear} Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy")
+                return true;
+            else return false;
+        }
+        public bool CheckLeftTopBtnWorks()
+        {
+            LeftTopBtn.Click();
+            var x = AllItemsBtn.Displayed;
+            var y = AboutBtn.Displayed;
+            var z = LogOutBtn.Displayed;
+            var w = ResetBtn.Displayed;
+            if (x == true && y == true && z == true && w == true)
+                return true;
+            else return false;
+
+            //Thread.Sleep(2000);
+            //try
+            //{
+            //    return CategoryItems.Displayed;
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
+
+
+
+        }
+        public bool CheckCloseBtnWorks()
+        {
+            CloseBtn.Click();
+            Thread.Sleep(2000);
+            try
+            {
+                return LeftTopBtn.Displayed;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool CheckAboutBtn()
+        {
+            LeftTopBtn.Click();
+            Thread.Sleep(2000);
+            AboutBtn.Click();   
+            //var selectElement = new SelectElement(LeftTopBtn);
+            //selectElement.SelectByText("ABOUT");
+            
+            var aboutBtn = driver.Url;
+            if (aboutBtn == "https://saucelabs.com/")
+                return true;
+            else return false;
+
+            #endregion
+        }
+        public bool CheckLogoutBtn()
+        {
+            LeftTopBtn.Click();
+            Thread.Sleep(2000);
+            LogOutBtn.Click();
+            var logoutBtn = driver.Url;
+            if (logoutBtn == "https://www.saucedemo.com/")
+                return true;
+            else return false;
+
+        }
+
     }
 }

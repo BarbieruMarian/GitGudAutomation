@@ -39,6 +39,13 @@ namespace TestProject.Pages
         private IWebElement AboutBtn => driver.FindElement(By.Id("about_sidebar_link"));
         private IWebElement LogOutBtn => driver.FindElement(By.Id("logout_sidebar_link"));
         private IWebElement ResetBtn => driver.FindElement(By.Id("reset_sidebar_link"));
+        private IWebElement ResetAppState => driver.FindElement(By.Id("reset_sidebar_link"));
+        private IWebElement CheckOut => driver.FindElement(By.Id("checkout"));
+        private IWebElement FirstName => driver.FindElement(By.Id("first-name"));
+        private IWebElement LastName => driver.FindElement(By.Id("last-name"));
+        private IWebElement PostalCode => driver.FindElement(By.Id("postal-code"));
+        private IWebElement ContinueBtn => driver.FindElement(By.Id("continue"));
+        private IWebElement FinishBtn => driver.FindElement(By.Id("finish"));
         #endregion
 
         #region Actions
@@ -319,18 +326,6 @@ namespace TestProject.Pages
                 return true;
             else return false;
 
-            //Thread.Sleep(2000);
-            //try
-            //{
-            //    return CategoryItems.Displayed;
-            //}
-            //catch
-            //{
-            //    return false;
-            //}
-
-
-
         }
         public bool CheckCloseBtnWorks()
         {
@@ -359,7 +354,7 @@ namespace TestProject.Pages
                 return true;
             else return false;
 
-            #endregion
+            
         }
         public bool CheckLogoutBtn()
         {
@@ -372,6 +367,44 @@ namespace TestProject.Pages
             else return false;
 
         }
+        public bool CheckResetAppState()
+        {
+            ClickAddToCart();
+            LeftTopBtn.Click();
+            Thread.Sleep(2000);
+            ResetAppState.Click();
+            var cartProductNumbers = ShoppingCartEmpty.Text;
+            if (cartProductNumbers == "")
+                return true;
+            else return false;
+        }
+        public bool checkCheckOutBtnWorks()
+        {
+            ClickAddToCart();
+            ShoppingCartNotEmpty.Click();
+            CheckOut.Click();
+            if (FirstName.Displayed)
+                return true;
+            else return false;
+
+        }
+        public bool checkFillFormAndContinueBtnWork()
+        {
+            ClickAddToCart();
+            ShoppingCartNotEmpty.Click();
+            CheckOut.Click();
+            FirstName.SendKeys("Dinu");
+            LastName.SendKeys("Minaila");
+            PostalCode.SendKeys("051801");
+            ContinueBtn.Click();
+            if (FinishBtn.Displayed)
+                return true;
+            else return false;
+
+        }
+
+        #endregion
+
 
     }
 }

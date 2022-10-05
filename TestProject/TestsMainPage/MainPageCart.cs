@@ -226,6 +226,76 @@ namespace TestProject.TestsMainPage
 
 
         }
+        [Fact]
+        public void CheckResetAppState()
+        {
+            //step 1 - Go To Website
+            var loginPage = new LoginPage(driver);
+            loginPage.GoTo();
+
+            //step 2 - Insert Username and Password
+            loginPage.Login(Config.Username, Config.Password);
+
+
+            //step 3 - Verify that login was indeed sucessfull
+            var mainPage = new ShopMainPage(driver);
+            var wasLoginSucessfull = mainPage.IsAtMainPage();
+            Assert.True(wasLoginSucessfull, "We couldn't find a specific element on the main page - Login Failed");
+
+            //step 4 verify that Add to Cart button number is 6
+
+            var resetAppState = mainPage.CheckResetAppState();
+
+            Assert.True(resetAppState, "the reset didn't work");
+
+
+        }
+        [Fact]
+        public void CheckCheckOutBtnWorks()
+        {
+            //step 1 - Go To Website
+            var loginPage = new LoginPage(driver);
+            loginPage.GoTo();
+
+            //step 2 - Insert Username and Password
+            loginPage.Login(Config.Username, Config.Password);
+
+
+            //step 3 - Verify that login was indeed sucessfull
+            var mainPage = new ShopMainPage(driver);
+            var wasLoginSucessfull = mainPage.IsAtMainPage();
+            Assert.True(wasLoginSucessfull, "We couldn't find a specific element on the main page - Login Failed");
+
+            //step 4 verify that Add to Cart button number is 6
+
+            var checkoutBtn = mainPage.checkCheckOutBtnWorks();
+
+            Assert.True(checkoutBtn, "the checkout btn doesn't work");
+
+        }
+        [Fact]
+        public void CheckFillFormAndContinueBtnWork()
+        {
+            //step 1 - Go To Website
+            var loginPage = new LoginPage(driver);
+            loginPage.GoTo();
+
+            //step 2 - Insert Username and Password
+            loginPage.Login(Config.Username, Config.Password);
+
+
+            //step 3 - Verify that login was indeed sucessfull
+            var mainPage = new ShopMainPage(driver);
+            var wasLoginSucessfull = mainPage.IsAtMainPage();
+            Assert.True(wasLoginSucessfull, "We couldn't find a specific element on the main page - Login Failed");
+
+            //step 4 verify that Add to Cart button number is 6
+
+            var continueBtn= mainPage.checkFillFormAndContinueBtnWork();
+
+            Assert.True(continueBtn, "the continue btn doesn't work");
+
+        }
 
     }
 

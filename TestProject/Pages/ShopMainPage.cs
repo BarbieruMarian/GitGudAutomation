@@ -318,6 +318,7 @@ namespace TestProject.Pages
         public bool CheckLeftTopBtnWorks()
         {
             LeftTopBtn.Click();
+            Thread.Sleep(2000);
             var x = AllItemsBtn.Displayed;
             var y = AboutBtn.Displayed;
             var z = LogOutBtn.Displayed;
